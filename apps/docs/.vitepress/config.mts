@@ -3,7 +3,7 @@ import { defineConfig } from "vitepress";
 export default defineConfig({
   title: "Assay",
   description: "The TypeScript-native LLM evaluation framework",
-  base: "/",
+  base: "/assay/",
 
   head: [["link", { rel: "icon", type: "image/svg+xml", href: "/logo.svg" }]],
 
