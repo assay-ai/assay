@@ -5,6 +5,9 @@ hero:
   name: "Assay"
   text: "Assay your AI. Ship with confidence."
   tagline: The TypeScript-native LLM evaluation framework that fits into your existing test suite.
+  image:
+    src: /logo.svg
+    alt: Assay
   actions:
     - theme: brand
       text: Get Started
