@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <defs>
+    <linearGradient id="grad" x1="35" y1="12" x2="85" y2="104" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f8fafc"/>
+      <stop offset="1" stop-color="#e2e8f0"/>
+    </linearGradient>
+    <linearGradient id="liquid" x1="35" y1="65" x2="85" y2="104" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6366f1"/>
+      <stop offset="1" stop-color="#8b5cf6"/>
+    </linearGradient>
+    <!-- Clip liquid to flask shape -->
+    <clipPath id="flask-clip">
+      <path d="M44 20h32v24l22 44c2 4 2 8-1 11s-7 5-12 5H35c-5 0-9-2-12-5s-3-7-1-11l22-44V20z"/>
+    </clipPath>
+  </defs>
+
+  <!-- Flask body -->
+  <path d="M44 20h32v24l22 44c2 4 2 8-1 11s-7 5-12 5H35c-5 0-9-2-12-5s-3-7-1-11l22-44V20z" fill="url(#grad)" stroke="#1e293b" stroke-width="3" stroke-linejoin="round"/>
+
+  <!-- Flask neck -->
+  <rect x="44" y="12" width="32" height="12" rx="3" fill="#f8fafc" stroke="#1e293b" stroke-width="3"/>
+
+  <!-- Liquid clipped to flask -->
+  <g clip-path="url(#flask-clip)">
+    <rect x="20" y="68" width="80" height="40" fill="url(#liquid)" opacity="0.85"/>
+    <!-- Liquid surface wave -->
+    <path d="M20 68q15-4 30 0t30 0v40H20z" fill="url(#liquid)" opacity="0.95"/>
+    <!-- Bubbles -->
+    <circle cx="50" cy="84" r="3" fill="#a78bfa" opacity="0.6"/>
+    <circle cx="66" cy="78" r="2.5" fill="#818cf8" opacity="0.5"/>
+    <circle cx="56" cy="74" r="2" fill="#c4b5fd" opacity="0.4"/>
+  </g>
+
+  <!-- Measurement lines -->
+  <line x1="50" y1="48" x2="62" y2="48" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/>
+  <line x1="48" y1="56" x2="58" y2="56" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Check mark badge -->
+  <circle cx="90" cy="30" r="14" fill="#10b981" stroke="#ffffff" stroke-width="2.5"/>
+  <path d="M83 30l4 4 8-8" stroke="#ffffff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
