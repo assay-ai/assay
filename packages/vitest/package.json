@@ -18,7 +18,6 @@
     "build": "tsup",
     "dev": "tsup --watch",
     "typecheck": "tsc --noEmit",
-    "test": "vitest run",
     "clean": "rm -rf dist .turbo"
   },
   "peerDependencies": {
