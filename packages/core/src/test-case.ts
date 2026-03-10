@@ -18,6 +18,7 @@ export interface LLMTestCase {
   completionTime?: number;
   name?: string;
   tags?: string[];
+  conversation?: ConversationalTestCase;
 }
 
 export interface ConversationalTestCase {
