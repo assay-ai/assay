@@ -73,12 +73,8 @@ JSON:
   },
 
   generateReason(score: number, verdicts: Array<{ statement: string; verdict: string }>): string {
-    const irrelevant = verdicts
-      .filter((v) => v.verdict === 'no')
-      .map((v) => v.statement);
-    const relevant = verdicts
-      .filter((v) => v.verdict === 'yes')
-      .map((v) => v.statement);
+    const irrelevant = verdicts.filter((v) => v.verdict === "no").map((v) => v.statement);
+    const relevant = verdicts.filter((v) => v.verdict === "yes").map((v) => v.statement);
 
     return `Based on the given input, reasons for why the retrieval context is irrelevant to the input, the statements in the retrieval context that are actually relevant, and the contextual relevancy score (the closer to 1 the better), please generate a CONCISE reason for the score.
 In your reason, you should quote data provided in the irrelevant and relevant statements to support your point.

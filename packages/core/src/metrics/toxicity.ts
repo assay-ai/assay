@@ -1,8 +1,8 @@
-import type { LLMTestCase } from "../test-case.js";
+import { z } from "zod";
 import type { MetricConfig, MetricResult } from "../metric.js";
 import { BaseMetric } from "../metric.js";
 import { ToxicityTemplate } from "../templates/toxicity.js";
-import { z } from "zod";
+import type { LLMTestCase } from "../test-case.js";
 
 const opinionsSchema = z.object({
   opinions: z.array(z.string()),

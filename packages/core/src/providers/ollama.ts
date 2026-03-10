@@ -42,9 +42,7 @@ export class OllamaProvider extends BaseLLMProvider {
 
     if (!response.ok) {
       const errorText = await response.text();
-      throw new Error(
-        `Ollama request failed (${response.status}): ${errorText}`,
-      );
+      throw new Error(`Ollama request failed (${response.status}): ${errorText}`);
     }
 
     const data = (await response.json()) as OllamaChatResponse;

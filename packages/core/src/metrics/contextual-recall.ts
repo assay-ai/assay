@@ -1,8 +1,8 @@
-import type { LLMTestCase } from "../test-case.js";
+import { z } from "zod";
 import type { MetricConfig, MetricResult } from "../metric.js";
 import { BaseMetric } from "../metric.js";
 import { ContextualRecallTemplate } from "../templates/contextual-recall.js";
-import { z } from "zod";
+import type { LLMTestCase } from "../test-case.js";
 
 const sentencesSchema = z.object({
   sentences: z.array(z.string()),
@@ -30,10 +30,6 @@ export class ContextualRecallMetric extends BaseMetric {
     "expectedOutput",
     "retrievalContext",
   ];
-
-  constructor(config?: MetricConfig) {
-    super(config);
-  }
 
   async measure(testCase: LLMTestCase): Promise<MetricResult> {
     this.validate(testCase);

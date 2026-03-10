@@ -1,8 +1,8 @@
-import type { LLMTestCase } from "../test-case.js";
+import type { z } from "zod";
 import type { MetricResult } from "../metric.js";
 import { BaseMetric } from "../metric.js";
 import type { MetricConfig } from "../metric.js";
-import { z } from "zod";
+import type { LLMTestCase } from "../test-case.js";
 
 export interface JsonCorrectnessConfig extends MetricConfig {
   /** Optional Zod schema to validate the JSON structure against */
@@ -43,7 +43,9 @@ export class JsonCorrectnessMetric extends BaseMetric {
     if (this.schema) {
       const result = this.schema.safeParse(parsed);
       if (!result.success) {
-        const errors = result.error.issues.map((i) => `${i.path.join(".")}: ${i.message}`).join("; ");
+        const errors = result.error.issues
+          .map((i) => `${i.path.join(".")}: ${i.message}`)
+          .join("; ");
         return this.buildResult(0, `JSON does not match schema: ${errors}`, start, {
           validationErrors: result.error.issues,
         });

@@ -1,8 +1,8 @@
-import type { LLMTestCase } from "../test-case.js";
+import { z } from "zod";
 import type { MetricConfig, MetricResult } from "../metric.js";
 import { BaseMetric } from "../metric.js";
 import { AnswerRelevancyTemplate } from "../templates/answer-relevancy.js";
-import { z } from "zod";
+import type { LLMTestCase } from "../test-case.js";
 
 const statementsSchema = z.object({
   statements: z.array(z.string()),
@@ -24,10 +24,6 @@ const reasonSchema = z.object({
 export class AnswerRelevancyMetric extends BaseMetric {
   readonly name = "Answer Relevancy";
   readonly requiredFields: (keyof LLMTestCase)[] = ["input", "actualOutput"];
-
-  constructor(config?: MetricConfig) {
-    super(config);
-  }
 
   async measure(testCase: LLMTestCase): Promise<MetricResult> {
     this.validate(testCase);

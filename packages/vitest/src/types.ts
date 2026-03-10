@@ -1,6 +1,7 @@
 import type { BaseMetric, LLMTestCase } from "@assay-ai/core";
 
 declare module "vitest" {
+  // biome-ignore lint/suspicious/noExplicitAny: required by Vitest's module augmentation
   interface Assertion<T = any> {
     toBeRelevant(options?: { threshold?: number }): Promise<void>;
     toBeFaithful(options?: { threshold?: number }): Promise<void>;

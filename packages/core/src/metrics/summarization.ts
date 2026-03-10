@@ -1,8 +1,8 @@
-import type { LLMTestCase } from "../test-case.js";
+import { z } from "zod";
 import type { MetricConfig, MetricResult } from "../metric.js";
 import { BaseMetric } from "../metric.js";
 import { SummarizationTemplate } from "../templates/summarization.js";
-import { z } from "zod";
+import type { LLMTestCase } from "../test-case.js";
 
 const truthsSchema = z.object({
   truths: z.array(z.string()),
@@ -33,10 +33,6 @@ const reasonSchema = z.object({
 export class SummarizationMetric extends BaseMetric {
   readonly name = "Summarization";
   readonly requiredFields: (keyof LLMTestCase)[] = ["input", "actualOutput"];
-
-  constructor(config?: MetricConfig) {
-    super(config);
-  }
 
   async measure(testCase: LLMTestCase): Promise<MetricResult> {
     this.validate(testCase);
@@ -107,8 +103,9 @@ export class SummarizationMetric extends BaseMetric {
           ),
         ]);
         // Simple agreement check: do both answers convey the same info?
-        return originalAnswer.answer.toLowerCase().trim() ===
-          summaryAnswer.answer.toLowerCase().trim();
+        return (
+          originalAnswer.answer.toLowerCase().trim() === summaryAnswer.answer.toLowerCase().trim()
+        );
       }),
     );
 

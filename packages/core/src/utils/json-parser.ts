@@ -38,18 +38,18 @@ function extractJsonSubstring(text: string): string | null {
 
     let depth = 0;
     let inString = false;
-    let escape = false;
+    let escaped = false;
 
     for (let i = startIdx; i < text.length; i++) {
       const char = text[i];
 
-      if (escape) {
-        escape = false;
+      if (escaped) {
+        escaped = false;
         continue;
       }
 
       if (char === "\\") {
-        escape = true;
+        escaped = true;
         continue;
       }
 
@@ -114,10 +114,7 @@ export interface ParseJsonOptions {
  *
  * @throws {Error} if all strategies fail and `silent` is not set
  */
-export function parseJson<T = unknown>(
-  text: string,
-  options: ParseJsonOptions = {},
-): T | null {
+export function parseJson<T = unknown>(text: string, options: ParseJsonOptions = {}): T | null {
   const trimmed = text.trim();
 
   // Strategy 1: Direct parse

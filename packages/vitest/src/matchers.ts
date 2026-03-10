@@ -1,12 +1,8 @@
 import type { BaseMetric, LLMTestCase } from "@assay-ai/core";
-import {
-  AnswerRelevancyMetric,
-  FaithfulnessMetric,
-  HallucinationMetric,
-} from "@assay-ai/core";
+import { AnswerRelevancyMetric, FaithfulnessMetric, HallucinationMetric } from "@assay-ai/core";
 
 function formatScore(score: number): string {
-  return (score * 100).toFixed(1) + "%";
+  return `${(score * 100).toFixed(1)}%`;
 }
 
 function formatFailureMessage(
@@ -26,11 +22,7 @@ function formatFailureMessage(
   return lines.join("\n");
 }
 
-function formatPassMessage(
-  metricName: string,
-  score: number,
-  threshold: number,
-): string {
+function formatPassMessage(metricName: string, score: number, threshold: number): string {
   return [
     `Expected test case NOT to pass ${metricName}`,
     `  Score:     ${formatScore(score)}`,
@@ -50,12 +42,7 @@ async function evaluateWithMetric(
     message: () =>
       passed
         ? formatPassMessage(metric.name, result.score, metric.threshold)
-        : formatFailureMessage(
-            metric.name,
-            result.score,
-            metric.threshold,
-            result.reason,
-          ),
+        : formatFailureMessage(metric.name, result.score, metric.threshold, result.reason),
     actual: result.score,
     expected: metric.threshold,
   };
@@ -96,11 +83,7 @@ export const assayMatchers = {
       pass: passed,
       message: () =>
         passed
-          ? formatPassMessage(
-              "HallucinationMetric (inverted)",
-              1 - hallucinationScore,
-              threshold,
-            )
+          ? formatPassMessage("HallucinationMetric (inverted)", 1 - hallucinationScore, threshold)
           : formatFailureMessage(
               "HallucinationMetric",
               1 - hallucinationScore,

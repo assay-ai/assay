@@ -75,7 +75,7 @@ JSON:
 
   generateReason(score: number, verdicts: Array<{ statement: string; verdict: string }>): string {
     const irrelevantStatements = verdicts
-      .filter((v) => v.verdict !== 'yes')
+      .filter((v) => v.verdict !== "yes")
       .map((v) => v.statement);
 
     return `Given the answer relevancy score, the list of irrelevant statements made in the actual output, and the input, provide a CONCISE reason for the score. Explain why it is not higher, but also why it is at its current score.

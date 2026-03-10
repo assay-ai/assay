@@ -1,8 +1,8 @@
-import type { LLMTestCase } from "../test-case.js";
+import { z } from "zod";
 import type { MetricConfig, MetricResult } from "../metric.js";
 import { BaseMetric } from "../metric.js";
 import { GEvalTemplate } from "../templates/g-eval.js";
-import { z } from "zod";
+import type { LLMTestCase } from "../test-case.js";
 
 const stepsSchema = z.object({
   steps: z.array(z.string()),

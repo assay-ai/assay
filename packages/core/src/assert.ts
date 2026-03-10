@@ -1,5 +1,5 @@
-import type { LLMTestCase } from "./test-case.js";
 import type { BaseMetric, MetricResult } from "./metric.js";
+import type { LLMTestCase } from "./test-case.js";
 
 export interface AssertEvalOptions {
   /** The test case to evaluate */
@@ -30,9 +30,7 @@ export interface AssertEvalResult {
  * expect(result.passed).toBe(true);
  * ```
  */
-export async function assertEval(
-  options: AssertEvalOptions,
-): Promise<AssertEvalResult> {
+export async function assertEval(options: AssertEvalOptions): Promise<AssertEvalResult> {
   const results: MetricResult[] = [];
   const failures: string[] = [];
 
@@ -47,8 +45,7 @@ export async function assertEval(
         );
       }
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : String(error);
+      const message = error instanceof Error ? error.message : String(error);
       results.push({
         score: 0,
         pass: false,

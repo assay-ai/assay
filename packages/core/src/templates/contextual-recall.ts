@@ -25,9 +25,7 @@ JSON:
   },
 
   classifyAttribution(sentences: string[], retrievalContext: string[]): string {
-    const numberedContext = retrievalContext
-      .map((ctx, i) => `Node ${i + 1}: ${ctx}`)
-      .join('\n');
+    const numberedContext = retrievalContext.map((ctx, i) => `Node ${i + 1}: ${ctx}`).join("\n");
 
     return `For EACH sentence in the given list below, determine whether the sentence can be attributed to the nodes of the retrieval context. Please generate a list of JSON objects with two keys: 'verdict' and 'reason'.
 The 'verdict' key should STRICTLY be either 'yes' or 'no'. Answer 'yes' if the sentence can be attributed to any parts of the retrieval context, else answer 'no'.
@@ -60,12 +58,8 @@ JSON:
   },
 
   generateReason(score: number, verdicts: Array<{ sentence: string; verdict: string }>): string {
-    const supportive = verdicts
-      .filter((v) => v.verdict === 'yes')
-      .map((v) => v.sentence);
-    const unsupportive = verdicts
-      .filter((v) => v.verdict === 'no')
-      .map((v) => v.sentence);
+    const supportive = verdicts.filter((v) => v.verdict === "yes").map((v) => v.sentence);
+    const unsupportive = verdicts.filter((v) => v.verdict === "no").map((v) => v.sentence);
 
     return `Given the original expected output, a list of supportive sentences, and a list of unsupportive sentences (which are deduced directly from the original expected output), and a contextual recall score (closer to 1 the better), summarize a CONCISE reason for the score.
 A supportive sentence is one that can be attributed to a node in the retrieval context.

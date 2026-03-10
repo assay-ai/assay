@@ -101,10 +101,11 @@ JSON:
 `;
   },
 
-  generateReason(score: number, verdicts: Array<{ claim: string; verdict: string; reason: string }>): string {
-    const contradictions = verdicts
-      .filter((v) => v.verdict === 'no')
-      .map((v) => v.reason);
+  generateReason(
+    score: number,
+    verdicts: Array<{ claim: string; verdict: string; reason: string }>,
+  ): string {
+    const contradictions = verdicts.filter((v) => v.verdict === "no").map((v) => v.reason);
 
     return `Below is a list of contradictions. It is a list of strings explaining why the 'actual output' does not align with the information presented in the 'retrieval context'. Contradictions happen in the 'actual output', NOT the 'retrieval context'.
 Given the faithfulness score, which is a 0-1 score indicating how faithful the actual output is to the retrieval context (higher the better), CONCISELY summarize the contradictions to justify the score.

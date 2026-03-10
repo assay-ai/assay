@@ -1,7 +1,7 @@
-import type { LLMTestCase } from "../test-case.js";
 import type { MetricResult } from "../metric.js";
 import { BaseMetric } from "../metric.js";
 import type { MetricConfig } from "../metric.js";
+import type { LLMTestCase } from "../test-case.js";
 
 export interface ExactMatchConfig extends MetricConfig {
   /** Whether to ignore case when comparing (default: false) */
@@ -42,7 +42,10 @@ export class ExactMatchMetric extends BaseMetric {
     }
 
     const score = actual === expected ? 1 : 0;
-    const reason = score === 1 ? "Output exactly matches expected output." : "Output does not match expected output.";
+    const reason =
+      score === 1
+        ? "Output exactly matches expected output."
+        : "Output does not match expected output.";
 
     return this.buildResult(score, reason, start);
   }

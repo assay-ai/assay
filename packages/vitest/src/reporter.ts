@@ -148,9 +148,7 @@ export class AssayReporter implements Reporter {
   }
 
   private printTaskResult(task: Task, passed: boolean): void {
-    const icon = passed
-      ? colorize("\u2713", COLORS.green)
-      : colorize("\u2717", COLORS.red);
+    const icon = passed ? colorize("\u2713", COLORS.green) : colorize("\u2717", COLORS.red);
     const name = task.name;
     const duration = task.result?.duration
       ? colorize(` (${formatDuration(task.result.duration)})`, COLORS.dim)
@@ -166,7 +164,7 @@ export class AssayReporter implements Reporter {
         const statusIcon = mr.passed
           ? colorize("\u25CF", COLORS.green)
           : colorize("\u25CF", COLORS.red);
-        const scoreStr = (mr.score * 100).toFixed(1) + "%";
+        const scoreStr = `${(mr.score * 100).toFixed(1)}%`;
         const thresholdStr = mr.threshold
           ? colorize(` (min: ${(mr.threshold * 100).toFixed(1)}%)`, COLORS.dim)
           : "";

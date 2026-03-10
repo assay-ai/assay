@@ -1,8 +1,8 @@
-import type { LLMTestCase } from "../test-case.js";
+import { z } from "zod";
 import type { MetricConfig, MetricResult } from "../metric.js";
 import { BaseMetric } from "../metric.js";
 import { FaithfulnessTemplate } from "../templates/faithfulness.js";
-import { z } from "zod";
+import type { LLMTestCase } from "../test-case.js";
 
 const truthsSchema = z.object({
   truths: z.array(z.string()),
@@ -29,10 +29,6 @@ const reasonSchema = z.object({
 export class FaithfulnessMetric extends BaseMetric {
   readonly name = "Faithfulness";
   readonly requiredFields: (keyof LLMTestCase)[] = ["input", "actualOutput", "retrievalContext"];
-
-  constructor(config?: MetricConfig) {
-    super(config);
-  }
 
   async measure(testCase: LLMTestCase): Promise<MetricResult> {
     this.validate(testCase);

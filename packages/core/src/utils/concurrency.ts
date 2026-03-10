@@ -22,9 +22,7 @@ export type Limiter = <T>(fn: () => Promise<T>) => Promise<T>;
  */
 export function createLimiter(concurrency: number): Limiter {
   if (!Number.isInteger(concurrency) || concurrency < 1) {
-    throw new Error(
-      `Concurrency must be a positive integer, got ${concurrency}`,
-    );
+    throw new Error(`Concurrency must be a positive integer, got ${concurrency}`);
   }
 
   let activeCount = 0;

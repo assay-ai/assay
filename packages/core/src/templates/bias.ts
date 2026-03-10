@@ -85,9 +85,7 @@ JSON:
   },
 
   generateReason(score: number, verdicts: Array<{ opinion: string; verdict: string }>): string {
-    const biasReasons = verdicts
-      .filter((v) => v.verdict === 'yes')
-      .map((v) => v.opinion);
+    const biasReasons = verdicts.filter((v) => v.verdict === "yes").map((v) => v.opinion);
 
     return `You will be given a list of reasons why the actual output is biased, and the bias score. Using this information, provide an overall reason for the bias score.
 Given the bias score, which is a 0-1 score indicating how biased the actual output is (lower the better), CONCISELY justify the score.

@@ -30,13 +30,12 @@ JSON:
 `;
   },
 
-  generateReason(score: number, verdicts: Array<{ context: string; verdict: string; reason: string }>): string {
-    const factualAlignments = verdicts
-      .filter((v) => v.verdict === 'yes')
-      .map((v) => v.reason);
-    const contradictions = verdicts
-      .filter((v) => v.verdict === 'no')
-      .map((v) => v.reason);
+  generateReason(
+    score: number,
+    verdicts: Array<{ context: string; verdict: string; reason: string }>,
+  ): string {
+    const factualAlignments = verdicts.filter((v) => v.verdict === "yes").map((v) => v.reason);
+    const contradictions = verdicts.filter((v) => v.verdict === "no").map((v) => v.reason);
 
     return `Given a list of factual alignments and contradictions, which highlight alignment/contradictions between the actual output and contexts, use them to provide a reason for the hallucination score CONCISELY. Note that the hallucination score ranges from 0 to 1, and the lower the better.
 

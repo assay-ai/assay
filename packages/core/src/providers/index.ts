@@ -4,10 +4,10 @@ export { OpenAIProvider } from "./openai.js";
 export { AnthropicProvider } from "./anthropic.js";
 export { OllamaProvider } from "./ollama.js";
 
-import { BaseLLMProvider } from "./base.js";
-import { OpenAIProvider } from "./openai.js";
 import { AnthropicProvider } from "./anthropic.js";
+import { BaseLLMProvider } from "./base.js";
 import { OllamaProvider } from "./ollama.js";
+import { OpenAIProvider } from "./openai.js";
 
 /**
  * A no-op provider used by non-LLM metrics (ExactMatch, JsonCorrectness).

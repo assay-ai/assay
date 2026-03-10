@@ -1,8 +1,8 @@
 import {
-  evaluate,
   AnswerRelevancyMetric,
   FaithfulnessMetric,
   HallucinationMetric,
+  evaluate,
 } from "@assay-ai/core";
 
 const results = await evaluate(
@@ -14,9 +14,7 @@ const results = await evaluate(
         "Refund Policy: Customers may request a full refund within 30 days of purchase date.",
         "Contact support@company.com for refund requests.",
       ],
-      context: [
-        "Our refund policy allows returns within 30 days for a full refund.",
-      ],
+      context: ["Our refund policy allows returns within 30 days for a full refund."],
     },
     {
       input: "How do I reset my password?",
@@ -25,9 +23,7 @@ const results = await evaluate(
       retrievalContext: [
         "To reset your password, go to Settings, then Security, and click Reset Password.",
       ],
-      context: [
-        "Users can reset their password from the Security section in Settings.",
-      ],
+      context: ["Users can reset their password from the Security section in Settings."],
     },
   ],
   [

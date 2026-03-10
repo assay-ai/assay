@@ -1,10 +1,6 @@
-import { describe, test, expect, beforeAll } from "vitest";
+import { AnswerRelevancyMetric, GEval, HallucinationMetric } from "@assay-ai/core";
 import { setupAssayMatchers } from "@assay-ai/vitest";
-import {
-  AnswerRelevancyMetric,
-  HallucinationMetric,
-  GEval,
-} from "@assay-ai/core";
+import { beforeAll, describe, expect, test } from "vitest";
 
 beforeAll(() => {
   setupAssayMatchers();
@@ -14,8 +10,7 @@ describe("Chatbot Quality Evaluation", () => {
   test("answers are relevant to questions", async () => {
     await expect({
       input: "How do I reset my password?",
-      actualOutput:
-        "Go to Settings > Security > Reset Password and follow the steps.",
+      actualOutput: "Go to Settings > Security > Reset Password and follow the steps.",
     }).toBeRelevant({ threshold: 0.8 });
   });
 

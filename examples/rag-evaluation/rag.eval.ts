@@ -1,9 +1,9 @@
 import {
-  evaluate,
-  FaithfulnessMetric,
   ContextualPrecisionMetric,
   ContextualRecallMetric,
   ContextualRelevancyMetric,
+  FaithfulnessMetric,
+  evaluate,
 } from "@assay-ai/core";
 
 // Simulate a RAG pipeline evaluation
@@ -27,8 +27,7 @@ const ragTestCases = [
     input: "What are the API rate limits?",
     actualOutput:
       "The API allows 100 requests per minute for free tier and 1000 requests per minute for premium users.",
-    expectedOutput:
-      "Free tier: 100 req/min. Premium: 1000 req/min.",
+    expectedOutput: "Free tier: 100 req/min. Premium: 1000 req/min.",
     retrievalContext: [
       "API Rate Limits: Free tier accounts are limited to 100 requests per minute.",
       "Premium accounts have a rate limit of 1000 requests per minute.",

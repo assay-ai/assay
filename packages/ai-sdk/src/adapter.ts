@@ -212,7 +212,7 @@ export function fromMessages(
     contextParts.unshift(`[${msg.role}]: ${msg.content}`);
   }
 
-  const input = lastUserMessage ?? messages[0]!.content;
+  const input = lastUserMessage ?? messages[0]?.content ?? "";
 
   const testCase: LLMTestCase = {
     input,

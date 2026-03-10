@@ -15,7 +15,7 @@ export abstract class BaseLLMProvider {
   protected readonly maxTokens: number;
 
   constructor(
-    protected readonly config: ProviderConfig = {},
+    protected readonly config: ProviderConfig,
     defaultModel: string,
   ) {
     this.modelName = config.model ?? defaultModel;
@@ -37,11 +37,7 @@ export abstract class BaseLLMProvider {
    * @param schema - A Zod schema to validate the response
    * @param retries - Number of retries on parse/validation failure (default 2)
    */
-  async generateJSON<T>(
-    prompt: string,
-    schema: ZodType<T>,
-    retries = 2,
-  ): Promise<T> {
+  async generateJSON<T>(prompt: string, schema: ZodType<T>, retries = 2): Promise<T> {
     const jsonInstruction = [
       "You MUST respond with valid JSON only. No markdown, no explanation, no extra text.",
       "Your response must be a single JSON object or array that can be directly parsed.",

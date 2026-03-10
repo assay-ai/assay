@@ -1,5 +1,5 @@
-import type { BaseLLMProvider } from "./providers/base.js";
 import type { BaseMetric } from "./metric.js";
+import type { BaseLLMProvider } from "./providers/base.js";
 
 export interface AssayConfig {
   /** Default LLM provider for metrics that need one */
@@ -33,19 +33,13 @@ let cachedConfig: AssayConfig | null = null;
  * - assay.config.js
  * - assay.config.mjs
  */
-export async function resolveConfig(
-  overrides: AssayConfig = {},
-): Promise<AssayConfig> {
+export async function resolveConfig(overrides: AssayConfig = {}): Promise<AssayConfig> {
   if (cachedConfig && Object.keys(overrides).length === 0) {
     return cachedConfig;
   }
 
   const cwd = process.cwd();
-  const configNames = [
-    "assay.config.ts",
-    "assay.config.js",
-    "assay.config.mjs",
-  ];
+  const configNames = ["assay.config.ts", "assay.config.js", "assay.config.mjs"];
 
   let fileConfig: AssayConfig = {};
 

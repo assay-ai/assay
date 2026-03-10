@@ -22,11 +22,11 @@ JSON:
   },
 
   evaluate(criteria: string, steps: string[], testCase: Record<string, string>): string {
-    const stepsFormatted = steps.map((step, i) => `${i + 1}. ${step}`).join('\n');
+    const stepsFormatted = steps.map((step, i) => `${i + 1}. ${step}`).join("\n");
     const testCaseFormatted = Object.entries(testCase)
       .map(([key, value]) => `${key}:\n${value}`)
-      .join('\n\n');
-    const parameters = Object.keys(testCase).join(', ');
+      .join("\n\n");
+    const parameters = Object.keys(testCase).join(", ");
 
     return `You are an evaluator. Given the following evaluation criteria and steps, assess the response below and return a JSON object with two fields:
 

@@ -1,12 +1,8 @@
 import type { BaseMetric, LLMTestCase } from "@assay-ai/core";
-import {
-  AnswerRelevancyMetric,
-  FaithfulnessMetric,
-  HallucinationMetric,
-} from "@assay-ai/core";
+import { AnswerRelevancyMetric, FaithfulnessMetric, HallucinationMetric } from "@assay-ai/core";
 
 function formatScore(score: number): string {
-  return (score * 100).toFixed(1) + "%";
+  return `${(score * 100).toFixed(1)}%`;
 }
 
 function formatFailureMessage(
@@ -26,11 +22,7 @@ function formatFailureMessage(
   return lines.join("\n");
 }
 
-function formatPassMessage(
-  metricName: string,
-  score: number,
-  threshold: number,
-): string {
+function formatPassMessage(metricName: string, score: number, threshold: number): string {
   return [
     `Expected test case NOT to pass ${metricName}`,
     `  Score:     ${formatScore(score)}`,
@@ -51,12 +43,7 @@ async function evaluateWithMetric(
     message: () =>
       (passed && !isNot) || (!passed && isNot)
         ? formatPassMessage(metric.name, result.score, metric.threshold)
-        : formatFailureMessage(
-            metric.name,
-            result.score,
-            metric.threshold,
-            result.reason,
-          ),
+        : formatFailureMessage(metric.name, result.score, metric.threshold, result.reason),
   };
 }
 
@@ -100,12 +87,7 @@ export const assayMatchers: Record<string, jest.CustomMatcher> = {
       message: () =>
         passed
           ? formatPassMessage("HallucinationMetric (inverted)", invertedScore, threshold)
-          : formatFailureMessage(
-              "HallucinationMetric",
-              invertedScore,
-              threshold,
-              result.reason,
-            ),
+          : formatFailureMessage("HallucinationMetric", invertedScore, threshold, result.reason),
     };
   },
 

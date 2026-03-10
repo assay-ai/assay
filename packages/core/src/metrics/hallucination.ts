@@ -1,8 +1,8 @@
-import type { LLMTestCase } from "../test-case.js";
+import { z } from "zod";
 import type { MetricConfig, MetricResult } from "../metric.js";
 import { BaseMetric } from "../metric.js";
 import { HallucinationTemplate } from "../templates/hallucination.js";
-import { z } from "zod";
+import type { LLMTestCase } from "../test-case.js";
 
 const contradictionSchema = z.object({
   verdict: z.enum(["yes", "no"]),

@@ -87,9 +87,7 @@ export abstract class BaseMetric {
     details?: Record<string, unknown>,
   ): MetricResult {
     const clamped = Math.max(0, Math.min(1, score));
-    const pass = this.lowerIsBetter
-      ? clamped <= this.threshold
-      : clamped >= this.threshold;
+    const pass = this.lowerIsBetter ? clamped <= this.threshold : clamped >= this.threshold;
 
     return {
       score: clamped,

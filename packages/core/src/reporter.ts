@@ -43,17 +43,8 @@ function padCenter(str: string, len: number): string {
   return " ".repeat(left) + str + " ".repeat(right);
 }
 
-function horizontalLine(
-  widths: number[],
-  left: string,
-  mid: string,
-  right: string,
-): string {
-  return (
-    left +
-    widths.map((w) => BOX.horizontal.repeat(w + 2)).join(mid) +
-    right
-  );
+function horizontalLine(widths: number[], left: string, mid: string, right: string): string {
+  return left + widths.map((w) => BOX.horizontal.repeat(w + 2)).join(mid) + right;
 }
 
 function row(cells: string[], widths: number[]): string {
@@ -78,9 +69,7 @@ export class ConsoleReporter {
 
   private printHeader(summary: EvaluationSummary): void {
     const durationSec = (summary.duration / 1000).toFixed(2);
-    console.log(
-      `  Assay Evaluation Results  (${summary.totalTests} test cases, ${durationSec}s)`,
-    );
+    console.log(`  Assay Evaluation Results  (${summary.totalTests} test cases, ${durationSec}s)`);
     console.log();
   }
 
@@ -102,32 +91,27 @@ export class ConsoleReporter {
     // Column widths
     const nameWidth = Math.max(
       10,
-      ...summary.results.map((r) =>
-        Math.min(30, r.testCaseName.length),
-      ),
+      ...summary.results.map((r) => Math.min(30, r.testCaseName.length)),
     );
     const statusWidth = 6;
     const metricWidth = 8;
 
     const headers = ["Test Case", "Status", ...metrics];
-    const widths = [
-      nameWidth,
-      statusWidth,
-      ...metrics.map((m) => Math.max(metricWidth, m.length)),
-    ];
+    const widths = [nameWidth, statusWidth, ...metrics.map((m) => Math.max(metricWidth, m.length))];
 
     // Top border
-    console.log(
-      `  ${horizontalLine(widths, BOX.topLeft, BOX.teeDown, BOX.topRight)}`,
-    );
+    console.log(`  ${horizontalLine(widths, BOX.topLeft, BOX.teeDown, BOX.topRight)}`);
 
     // Header row
-    console.log(`  ${row(headers.map((h, i) => padCenter(h, widths[i]!)), widths)}`);
+    console.log(
+      `  ${row(
+        headers.map((h, i) => padCenter(h, widths[i]!)),
+        widths,
+      )}`,
+    );
 
     // Header separator
-    console.log(
-      `  ${horizontalLine(widths, BOX.teeRight, BOX.cross, BOX.teeLeft)}`,
-    );
+    console.log(`  ${horizontalLine(widths, BOX.teeRight, BOX.cross, BOX.teeLeft)}`);
 
     // Data rows
     for (const result of summary.results) {
@@ -136,9 +120,7 @@ export class ConsoleReporter {
         result.testCaseName.slice(0, nameWidth),
         status,
         ...metrics.map((metricName) => {
-          const mr = result.metricResults.find(
-            (r) => r.metricName === metricName,
-          );
+          const mr = result.metricResults.find((r) => r.metricName === metricName);
           if (!mr) return "-";
           return mr.score.toFixed(2);
         }),
@@ -147,9 +129,7 @@ export class ConsoleReporter {
     }
 
     // Bottom border
-    console.log(
-      `  ${horizontalLine(widths, BOX.bottomLeft, BOX.teeUp, BOX.bottomRight)}`,
-    );
+    console.log(`  ${horizontalLine(widths, BOX.bottomLeft, BOX.teeUp, BOX.bottomRight)}`);
   }
 
   private printSummaryFooter(summary: EvaluationSummary): void {
@@ -159,9 +139,7 @@ export class ConsoleReporter {
         ? ((summary.totalPassed / summary.totalTests) * 100).toFixed(1)
         : "0.0";
 
-    console.log(
-      `  Passed: ${summary.totalPassed}/${summary.totalTests} (${passRate}%)`,
-    );
+    console.log(`  Passed: ${summary.totalPassed}/${summary.totalTests} (${passRate}%)`);
 
     if (Object.keys(summary.averageScores).length > 0) {
       console.log("  Average Scores:");

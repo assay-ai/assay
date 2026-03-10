@@ -1,8 +1,8 @@
-import type { LLMTestCase } from "../test-case.js";
+import { z } from "zod";
 import type { MetricConfig, MetricResult } from "../metric.js";
 import { BaseMetric } from "../metric.js";
 import { ContextualPrecisionTemplate } from "../templates/contextual-precision.js";
-import { z } from "zod";
+import type { LLMTestCase } from "../test-case.js";
 
 const relevanceSchema = z.object({
   verdict: z.enum(["yes", "no"]),
@@ -21,10 +21,6 @@ export class ContextualPrecisionMetric extends BaseMetric {
     "expectedOutput",
     "retrievalContext",
   ];
-
-  constructor(config?: MetricConfig) {
-    super(config);
-  }
 
   async measure(testCase: LLMTestCase): Promise<MetricResult> {
     this.validate(testCase);

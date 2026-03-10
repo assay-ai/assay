@@ -1,8 +1,8 @@
-import type { LLMTestCase } from "../test-case.js";
+import { z } from "zod";
 import type { MetricConfig, MetricResult } from "../metric.js";
 import { BaseMetric } from "../metric.js";
 import { ContextualRelevancyTemplate } from "../templates/contextual-relevancy.js";
-import { z } from "zod";
+import type { LLMTestCase } from "../test-case.js";
 
 const statementsSchema = z.object({
   statements: z.array(z.string()),
@@ -24,10 +24,6 @@ const reasonSchema = z.object({
 export class ContextualRelevancyMetric extends BaseMetric {
   readonly name = "Contextual Relevancy";
   readonly requiredFields: (keyof LLMTestCase)[] = ["input", "actualOutput", "retrievalContext"];
-
-  constructor(config?: MetricConfig) {
-    super(config);
-  }
 
   async measure(testCase: LLMTestCase): Promise<MetricResult> {
     this.validate(testCase);
