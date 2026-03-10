@@ -3,9 +3,14 @@ export type { ProviderConfig } from "./base.js";
 export { OpenAIProvider } from "./openai.js";
 export { AnthropicProvider } from "./anthropic.js";
 export { OllamaProvider } from "./ollama.js";
+export { GeminiProvider } from "./gemini.js";
+export { AzureOpenAIProvider } from "./azure-openai.js";
+export type { AzureOpenAIConfig } from "./azure-openai.js";
 
 import { AnthropicProvider } from "./anthropic.js";
+import { AzureOpenAIProvider } from "./azure-openai.js";
 import { BaseLLMProvider } from "./base.js";
+import { GeminiProvider } from "./gemini.js";
 import { OllamaProvider } from "./ollama.js";
 import { OpenAIProvider } from "./openai.js";
 
@@ -37,6 +42,8 @@ export function resolveProvider(provider?: BaseLLMProvider | string): BaseLLMPro
     if (typeof process !== "undefined" && process.env) {
       if (process.env.OPENAI_API_KEY) return new OpenAIProvider();
       if (process.env.ANTHROPIC_API_KEY) return new AnthropicProvider();
+      if (process.env.GOOGLE_API_KEY) return new GeminiProvider();
+      if (process.env.AZURE_OPENAI_API_KEY) return new AzureOpenAIProvider();
     }
     // Return noop for metrics that don't need a provider
     return new NoopProvider();
@@ -50,6 +57,9 @@ export function resolveProvider(provider?: BaseLLMProvider | string): BaseLLMPro
     }
     if (provider.startsWith("claude-")) {
       return new AnthropicProvider({ model: provider });
+    }
+    if (provider.startsWith("gemini-")) {
+      return new GeminiProvider({ model: provider });
     }
     return new OllamaProvider({ model: provider });
   }
