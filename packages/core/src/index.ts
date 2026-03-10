@@ -26,11 +26,18 @@ export {
   SummarizationMetric,
   ExactMatchMetric,
   JsonCorrectnessMetric,
+  ToolCorrectnessMetric,
+  TaskCompletionMetric,
+  GoalAccuracyMetric,
+  ConversationCompletenessMetric,
+  KnowledgeRetentionMetric,
+  RoleAdherenceMetric,
 } from "./metrics/index.js";
 export type {
   GEvalConfig,
   ExactMatchConfig,
   JsonCorrectnessConfig,
+  ToolCorrectnessConfig,
 } from "./metrics/index.js";
 
 // Providers
@@ -39,9 +46,11 @@ export {
   OpenAIProvider,
   AnthropicProvider,
   OllamaProvider,
+  GeminiProvider,
+  AzureOpenAIProvider,
   resolveProvider,
 } from "./providers/index.js";
-export type { ProviderConfig } from "./providers/index.js";
+export type { ProviderConfig, AzureOpenAIConfig } from "./providers/index.js";
 
 // Config
 export { resolveConfig, resetConfigCache } from "./config.js";
