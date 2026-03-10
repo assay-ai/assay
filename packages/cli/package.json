@@ -1,0 +1,33 @@
+{
+  "name": "@assay-ai/cli",
+  "version": "0.2.1-beta",
+  "description": "CLI for the Assay LLM evaluation framework",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "assay": "./dist/index.js"
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist .turbo"
+  },
+  "dependencies": {
+    "@assay-ai/core": "workspace:*",
+    "picocolors": "^1.1.0"
+  },
+  "devDependencies": {
+    "@assay-ai/tsconfig": "workspace:*",
+    "@types/node": "^22.0.0",
+    "tsup": "^8.3.0",
+    "typescript": "^5.7.0"
+  },
+  "keywords": ["llm", "evaluation", "testing", "ai", "cli"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/assay-ai/assay",
+    "directory": "packages/cli"
+  }
+}
