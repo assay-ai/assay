@@ -51,12 +51,7 @@ jobs:
         run: |
           npm config set provenance true
 
-          # Determine tag based on version
-          if [[ "${{ github.ref }}" == *"beta"* ]] || [[ "${{ github.ref }}" == *"alpha"* ]]; then
-            NPM_TAG="beta"
-          else
-            NPM_TAG="latest"
-          fi
+          NPM_TAG="latest"
           echo "Publishing with tag: $NPM_TAG"
 
           # Publish all public packages
