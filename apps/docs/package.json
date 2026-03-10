@@ -1,0 +1,13 @@
+{
+  "name": "@assay-ai/docs",
+  "version": "0.3.0-beta",
+  "private": true,
+  "scripts": {
+    "dev": "vitepress dev",
+    "build": "vitepress build",
+    "preview": "vitepress preview"
+  },
+  "devDependencies": {
+    "vitepress": "^1.5.0"
+  }
+}
