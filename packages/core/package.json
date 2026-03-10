@@ -1,6 +1,6 @@
 {
   "name": "@assay-ai/core",
-  "version": "0.2.1-beta",
+  "version": "0.3.0-beta",
   "description": "Core evaluation engine for the Assay LLM evaluation framework",
   "license": "MIT",
   "type": "module",
