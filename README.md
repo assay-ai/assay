@@ -4,83 +4,87 @@
 
 **Assay your AI. Ship with confidence.**
 
-The TypeScript-native LLM evaluation framework that fits into your existing test suite.
+*The TypeScript-native LLM evaluation framework*
 
-[![npm version](https://img.shields.io/npm/v/@assay-ai/core?color=blue&label=npm)](https://www.npmjs.com/package/@assay-ai/core)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.7+-blue?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![CI](https://github.com/assay-ai/assay/actions/workflows/ci.yml/badge.svg)](https://github.com/assay-ai/assay/actions/workflows/ci.yml)
+[![npm version](https://img.shields.io/npm/v/@assay-ai/core?style=flat-square&color=6366f1)](https://www.npmjs.com/package/@assay-ai/core)
+[![downloads](https://img.shields.io/npm/dm/@assay-ai/core?style=flat-square&color=10b981)](https://www.npmjs.com/package/@assay-ai/core)
+[![CI](https://img.shields.io/github/actions/workflow/status/assay-ai/assay/ci.yml?style=flat-square&label=CI)](https://github.com/assay-ai/assay/actions)
+[![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](LICENSE)
 
-[Quick Start](#quick-start) | [Metrics](#metrics) | [Vitest](#vitest-integration) | [Jest](#jest-integration) | [AI SDK](#vercel-ai-sdk) | [Docs](https://assay.dev)
+[Documentation](https://assay.js.org) · [API Reference](https://assay.js.org/api/) · [Metrics](https://assay.js.org/metrics/) · [Changelog](https://github.com/assay-ai/assay/releases)
 
 </div>
 
----
+## Highlights
 
-## Why Assay?
+<table>
+<tr>
+<td width="50%">
 
-You write tests for your code. Why not for your AI?
+### 18 Metrics
 
-LLM outputs are non-deterministic. A prompt change that improves one response can silently break ten others. Assay gives you the safety net:
+- **RAG** — Faithfulness, Answer Relevancy, Hallucination, Contextual Precision/Recall/Relevancy
+- **Agentic** — Tool Correctness, Task Completion, Goal Accuracy
+- **Conversational** — Knowledge Retention, Conversation Completeness, Role Adherence
+- **Safety** — Bias, Toxicity
+- **Custom** — GEval, Summarization
+- **Non-LLM** — Exact Match, JSON Correctness
 
-- **12 research-backed metrics** -- faithfulness, answer relevancy, hallucination, contextual precision/recall/relevancy, bias, toxicity, GEval, tool correctness, latency, and cost
-- **Drop into Vitest or Jest** -- evaluate inside the test runner you already use, with familiar `describe` / `it` / `expect` patterns
-- **Vercel AI SDK adapter** -- pipe `generateText` results straight into evaluation
-- **Custom metrics with GEval** -- define any evaluation criteria in plain English and let an LLM grade it
-- **Type-safe from the ground up** -- full TypeScript, Zod-validated configs, zero `any`
-- **Parallel execution** -- run hundreds of test cases concurrently with configurable concurrency limits
-- **Provider agnostic** -- works with OpenAI, Anthropic, or any LLM provider
+</td>
+<td width="50%">
 
-Stop guessing if your AI works. Start asserting it.
+### Features
+
+- **Vitest & Jest** integration with custom matchers
+- **Vercel AI SDK** adapter
+- **CLI** — `assay run`, `assay init`, `assay list-metrics`
+- **5 providers** — OpenAI, Anthropic, Gemini, Azure, Ollama
+- **Type-safe** — full TypeScript, Zod-validated, zero `any`
+- **Parallel execution** with configurable concurrency
+- **Provider agnostic** — bring your own LLM
+
+</td>
+</tr>
+</table>
+
+## Installation
+
+```bash
+pnpm add @assay-ai/core     # pnpm
+npm install @assay-ai/core   # npm
+yarn add @assay-ai/core      # Yarn
+```
 
 ## Quick Start
 
-```bash
-pnpm add @assay-ai/core
-```
-
 ```typescript
-import { evaluate, Faithfulness, AnswerRelevancy } from "@assay-ai/core";
+import {
+  AnswerRelevancyMetric,
+  evaluate,
+  FaithfulnessMetric,
+  HallucinationMetric,
+} from "@assay-ai/core";
 
-const results = await evaluate({
-  testCases: [
+const results = await evaluate(
+  [
     {
-      input: "What is the capital of France?",
-      actualOutput: "The capital of France is Paris.",
-      expectedOutput: "Paris",
-      context: ["France is a country in Europe. Its capital is Paris."],
+      input: "What is the refund policy?",
+      actualOutput: "You can request a full refund within 30 days.",
+      retrievalContext: [
+        "Refund Policy: Full refund within 30 days of purchase.",
+      ],
+      context: ["Our refund policy allows returns within 30 days."],
     },
   ],
-  metrics: [
-    new Faithfulness(),
-    new AnswerRelevancy(),
+  [
+    new AnswerRelevancyMetric({ threshold: 0.7 }),
+    new FaithfulnessMetric({ threshold: 0.7 }),
+    new HallucinationMetric({ threshold: 0.3 }),
   ],
-});
+);
 
-console.log(results);
-// => [{ metric: "Faithfulness", score: 1.0, passed: true }, ...]
+console.log(`Pass rate: ${results.summary.passRate.toFixed(1)}%`);
 ```
-
-## Metrics
-
-Assay ships with 12 evaluation metrics out of the box.
-
-| Metric | Description | Required Fields |
-|--------|-------------|-----------------|
-| **Faithfulness** | Measures whether the output is grounded in the provided context | `input`, `actualOutput`, `context` |
-| **Answer Relevancy** | Measures how relevant the output is to the input question | `input`, `actualOutput` |
-| **Hallucination** | Detects claims in the output not supported by context | `input`, `actualOutput`, `context` |
-| **Contextual Precision** | Measures whether relevant context items are ranked higher | `input`, `actualOutput`, `expectedOutput`, `context` |
-| **Contextual Recall** | Measures whether all relevant information from context is retrieved | `input`, `actualOutput`, `expectedOutput`, `context` |
-| **Contextual Relevancy** | Measures whether retrieved context is relevant to the input | `input`, `actualOutput`, `context` |
-| **Bias** | Detects demographic or ideological bias in the output | `input`, `actualOutput` |
-| **Toxicity** | Detects toxic, harmful, or offensive content | `input`, `actualOutput` |
-| **GEval** | Custom LLM-as-judge evaluation with user-defined criteria | `input`, `actualOutput` (+ custom) |
-| **Tool Correctness** | Validates that the correct tools were called with correct parameters | `input`, `toolsCalled`, `expectedTools` |
-| **Latency** | Asserts that completion time is within acceptable bounds | `input`, `completionTime` |
-| **Cost** | Asserts that token cost is within budget | `input`, `tokenCost` |
-
-Every metric returns a score between 0 and 1 and a boolean `passed` based on a configurable threshold (default: 0.5).
 
 ## Vitest Integration
 
@@ -89,150 +93,29 @@ pnpm add -D @assay-ai/core @assay-ai/vitest
 ```
 
 ```typescript
-// chatbot.eval.ts
-import { describe } from "vitest";
-import { describeEval, itEval } from "@assay-ai/vitest";
-import { Faithfulness, AnswerRelevancy, Hallucination } from "@assay-ai/core";
+import { beforeAll, describe, expect, test } from "vitest";
+import { setupAssayMatchers } from "@assay-ai/vitest";
+import { GEval } from "@assay-ai/core";
 
-describeEval("Customer Support Chatbot", () => {
-  itEval(
-    "should answer product questions accurately",
-    {
-      input: "What is your return policy?",
-      actualOutput: "You can return items within 30 days of purchase.",
-      context: [
-        "Our return policy allows returns within 30 days of purchase.",
-        "Items must be in original packaging.",
-      ],
-    },
-    [new Faithfulness(), new AnswerRelevancy(), new Hallucination()],
-  );
-});
-```
+beforeAll(() => { setupAssayMatchers(); });
 
-Run with:
+describe("Chatbot Evaluation", () => {
+  test("answers are relevant", async () => {
+    await expect({
+      input: "How do I reset my password?",
+      actualOutput: "Go to Settings > Security > Reset Password.",
+    }).toBeRelevant({ threshold: 0.8 });
+  });
 
-```bash
-vitest --reporter=verbose chatbot.eval.ts
-```
-
-## Jest Integration
-
-```bash
-pnpm add -D @assay-ai/core @assay-ai/jest
-```
-
-```typescript
-// chatbot.eval.ts
-import { describeEval, itEval } from "@assay-ai/jest";
-import { Faithfulness, AnswerRelevancy } from "@assay-ai/core";
-
-describeEval("Customer Support Chatbot", () => {
-  itEval(
-    "should answer product questions accurately",
-    {
-      input: "What is your return policy?",
-      actualOutput: "You can return items within 30 days of purchase.",
-      context: [
-        "Our return policy allows returns within 30 days of purchase.",
-      ],
-    },
-    [new Faithfulness(), new AnswerRelevancy()],
-  );
-});
-```
-
-## Vercel AI SDK
-
-```bash
-pnpm add @assay-ai/core @assay-ai/ai-sdk
-```
-
-```typescript
-import { generateText } from "ai";
-import { openai } from "@ai-sdk/openai";
-import { evaluateAIResponse } from "@assay-ai/ai-sdk";
-import { Faithfulness, AnswerRelevancy } from "@assay-ai/core";
-
-const result = await generateText({
-  model: openai("gpt-4o"),
-  prompt: "What is the capital of France?",
-});
-
-const evalResults = await evaluateAIResponse({
-  input: "What is the capital of France?",
-  response: result,
-  context: ["France is a country in Europe. Its capital is Paris."],
-  metrics: [new Faithfulness(), new AnswerRelevancy()],
-});
-
-console.log(evalResults);
-```
-
-## Custom Metrics with GEval
-
-Define any evaluation criteria in plain English. Assay uses an LLM to judge the output against your criteria.
-
-```typescript
-import { evaluate, GEval } from "@assay-ai/core";
-
-const politeness = new GEval({
-  name: "Politeness",
-  criteria: "The response should be polite, professional, and use courteous language.",
-  evaluationSteps: [
-    "Check if the response uses greetings or polite phrases",
-    "Verify the tone is professional and respectful",
-    "Ensure there is no dismissive or rude language",
-  ],
-});
-
-const results = await evaluate({
-  testCases: [
-    {
-      input: "I need help with my order",
-      actualOutput: "I'd be happy to help you with your order! Could you please share your order number?",
-    },
-  ],
-  metrics: [politeness],
-});
-```
-
-## Configuration
-
-### Provider Configuration
-
-Assay uses environment variables for LLM provider configuration:
-
-```bash
-# OpenAI (default)
-export OPENAI_API_KEY="sk-..."
-
-# Anthropic
-export ANTHROPIC_API_KEY="sk-ant-..."
-```
-
-### Metric Options
-
-Every metric accepts optional configuration:
-
-```typescript
-new Faithfulness({
-  threshold: 0.7,       // Minimum score to pass (default: 0.5)
-  model: "gpt-4o-mini", // LLM model for evaluation
-  verbose: true,         // Log detailed reasoning
-});
-```
-
-### Evaluation Options
-
-```typescript
-await evaluate({
-  testCases: [...],
-  metrics: [...],
-  options: {
-    concurrency: 5,       // Run 5 test cases in parallel (default: 10)
-    verbose: true,         // Detailed logging
-  },
+  test("custom criteria with GEval", async () => {
+    await expect({
+      input: "Help with my order",
+      actualOutput: "I'd be happy to help! What's your order number?",
+    }).toPassMetric(new GEval({
+      name: "Politeness",
+      criteria: "The response should be polite and professional.",
+    }));
+  });
 });
 ```
 
@@ -240,15 +123,47 @@ await evaluate({
 
 | Package | Description |
 |---------|-------------|
-| [`@assay-ai/core`](./packages/core) | Core evaluation engine and all metrics |
-| [`@assay-ai/vitest`](./packages/vitest) | Vitest integration (`describeEval`, `itEval`) |
-| [`@assay-ai/jest`](./packages/jest) | Jest integration (`describeEval`, `itEval`) |
-| [`@assay-ai/ai-sdk`](./packages/ai-sdk) | Vercel AI SDK adapter |
+| [`@assay-ai/core`](https://www.npmjs.com/package/@assay-ai/core) | Core evaluation engine — 18 metrics, 5 providers |
+| [`@assay-ai/vitest`](https://www.npmjs.com/package/@assay-ai/vitest) | Vitest custom matchers & reporter |
+| [`@assay-ai/jest`](https://www.npmjs.com/package/@assay-ai/jest) | Jest custom matchers |
+| [`@assay-ai/ai-sdk`](https://www.npmjs.com/package/@assay-ai/ai-sdk) | Vercel AI SDK adapter |
+| [`@assay-ai/cli`](https://www.npmjs.com/package/@assay-ai/cli) | CLI tool — `assay run`, `assay init` |
+
+## Configuration
+
+```bash
+# Set your LLM provider (auto-detected from env vars)
+export OPENAI_API_KEY="sk-..."        # OpenAI
+export ANTHROPIC_API_KEY="sk-ant-..." # Anthropic
+export GOOGLE_API_KEY="..."           # Google Gemini
+```
+
+```typescript
+// Every metric accepts optional config
+new FaithfulnessMetric({
+  threshold: 0.7,       // Min score to pass (default: 0.5)
+  model: "gpt-4o-mini", // LLM model for evaluation
+  verbose: true,        // Log detailed reasoning
+});
+```
+
+<p align="center">
+  <a href="https://assay.js.org"><img src="https://img.shields.io/badge/Full_Documentation-6366f1?style=for-the-badge&logo=readthedocs&logoColor=white" alt="Documentation" /></a>
+  <a href="https://assay.js.org/metrics/"><img src="https://img.shields.io/badge/All_18_Metrics-10b981?style=for-the-badge&logo=checkmarx&logoColor=white" alt="Metrics" /></a>
+  <a href="https://assay.js.org/api/"><img src="https://img.shields.io/badge/API_Reference-f97316?style=for-the-badge&logo=book&logoColor=white" alt="API Reference" /></a>
+</p>
 
 ## Contributing
 
-We welcome contributions! Please read our [Contributing Guide](CONTRIBUTING.md) for details on the development workflow, how to propose changes, and how to add new metrics.
+We welcome contributions! See our [Contributing Guide](CONTRIBUTING.md) for details.
 
 ## License
 
-[MIT](LICENSE) -- Assay AI
+[MIT](LICENSE) © [Assay AI](https://github.com/assay-ai)
+
+<p align="center">
+  <a href="https://assay.js.org"><img src="https://img.shields.io/badge/Documentation-6366f1?style=for-the-badge&logo=readthedocs&logoColor=white" alt="Documentation" /></a>
+  <a href="https://www.npmjs.com/org/assay-ai"><img src="https://img.shields.io/badge/npm-cb3837?style=for-the-badge&logo=npm&logoColor=white" alt="npm" /></a>
+  <a href="https://github.com/assay-ai/assay"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" /></a>
+  <a href="https://github.com/assay-ai/assay/issues"><img src="https://img.shields.io/badge/Issues-6366f1?style=for-the-badge&logo=github&logoColor=white" alt="Issues" /></a>
+</p>

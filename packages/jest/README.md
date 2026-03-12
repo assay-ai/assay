@@ -1,23 +1,26 @@
+<div align="center">
+
 # @assay-ai/jest
 
-Jest integration for [Assay](https://github.com/assay-ai/assay) -- the TypeScript-native LLM evaluation framework.
+*Custom Jest matchers for LLM evaluation with Assay*
 
-[![npm version](https://img.shields.io/npm/v/@assay-ai/jest?color=blue)](https://www.npmjs.com/package/@assay-ai/jest)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![npm version](https://img.shields.io/npm/v/@assay-ai/jest?style=flat-square&color=6366f1)](https://www.npmjs.com/package/@assay-ai/jest)
+[![downloads](https://img.shields.io/npm/dm/@assay-ai/jest?style=flat-square&color=10b981)](https://www.npmjs.com/package/@assay-ai/jest)
+[![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](https://github.com/assay-ai/assay/blob/main/LICENSE)
+
+[Documentation](https://assay.js.org) · [Metrics](https://assay.js.org/metrics/) · [API Reference](https://assay.js.org/api/)
+
+</div>
 
 ## Installation
 
 ```bash
-npm install -D @assay-ai/core @assay-ai/jest
-# or
-pnpm add -D @assay-ai/core @assay-ai/jest
+pnpm add -D @assay-ai/core @assay-ai/jest     # pnpm
+npm install -D @assay-ai/core @assay-ai/jest   # npm
+yarn add -D @assay-ai/core @assay-ai/jest      # Yarn
 ```
 
 ## Quick Start
-
-### Setup
-
-Register the Assay matchers in your Jest setup file:
 
 ```typescript
 // jest.setup.ts
@@ -26,23 +29,10 @@ import { setupAssayMatchers } from "@assay-ai/jest";
 setupAssayMatchers();
 ```
 
-Then configure Jest to use it:
-
-```json
-// jest.config.json
-{
-  "setupFilesAfterSetup": ["./jest.setup.ts"]
-}
-```
-
-### Writing Evaluations
-
 ```typescript
 // chatbot.eval.ts
-import { GEval } from "@assay-ai/core";
-
 describe("Customer Support Chatbot", () => {
-  it("should answer product questions accurately", async () => {
+  it("answers are relevant", async () => {
     await expect({
       input: "What is your return policy?",
       actualOutput: "You can return items within 30 days of purchase.",
@@ -52,47 +42,23 @@ describe("Customer Support Chatbot", () => {
     }).toBeRelevant({ threshold: 0.8 });
   });
 
-  it("should be faithful to context", async () => {
+  it("does not hallucinate", async () => {
     await expect({
       input: "What is your return policy?",
       actualOutput: "You can return items within 30 days of purchase.",
-      retrievalContext: [
+      context: [
         "Our return policy allows returns within 30 days of purchase.",
       ],
-    }).toBeFaithful();
-  });
-
-  it("should pass custom metric", async () => {
-    const politeness = new GEval({
-      name: "Politeness",
-      criteria: "The response should be polite and professional.",
-    });
-
-    await expect({
-      input: "Help me with my order",
-      actualOutput: "I'd be happy to help! Could you share your order number?",
-    }).toPassMetric(politeness);
+    }).toNotHallucinate();
   });
 });
 ```
 
-### Available Matchers
+## Part of the [Assay](https://github.com/assay-ai/assay) monorepo
 
-| Matcher | Description |
-|---------|-------------|
-| `toBeRelevant(options?)` | Asserts the output is relevant to the input (Answer Relevancy) |
-| `toBeFaithful(options?)` | Asserts the output is grounded in context (Faithfulness) |
-| `toNotHallucinate(options?)` | Asserts the output doesn't contain hallucinations |
-| `toPassMetric(metric)` | Asserts the test case passes a specific metric |
-| `toPassAllMetrics(metrics)` | Asserts the test case passes all given metrics |
-
-All matchers accept an optional `{ threshold?: number }` options object.
-
-## Peer Dependencies
-
-- `@assay-ai/core` >= 0.1.0
-- `jest` >= 29.0.0
-
-## License
-
-[MIT](https://github.com/assay-ai/assay/blob/main/LICENSE)
+<p align="center">
+  <a href="https://assay.js.org"><img src="https://img.shields.io/badge/Documentation-6366f1?style=for-the-badge&logo=readthedocs&logoColor=white" alt="Documentation" /></a>
+  <a href="https://www.npmjs.com/package/@assay-ai/jest"><img src="https://img.shields.io/badge/npm-cb3837?style=for-the-badge&logo=npm&logoColor=white" alt="npm" /></a>
+  <a href="https://github.com/assay-ai/assay"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" /></a>
+  <a href="https://github.com/assay-ai/assay/issues"><img src="https://img.shields.io/badge/Issues-6366f1?style=for-the-badge&logo=github&logoColor=white" alt="Issues" /></a>
+</p>

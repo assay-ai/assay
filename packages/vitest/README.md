@@ -1,35 +1,37 @@
+<div align="center">
+
 # @assay-ai/vitest
 
-Vitest integration for [Assay](https://github.com/assay-ai/assay) -- the TypeScript-native LLM evaluation framework.
+*Custom Vitest matchers for LLM evaluation with Assay*
 
-[![npm version](https://img.shields.io/npm/v/@assay-ai/vitest?color=blue)](https://www.npmjs.com/package/@assay-ai/vitest)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![npm version](https://img.shields.io/npm/v/@assay-ai/vitest?style=flat-square&color=6366f1)](https://www.npmjs.com/package/@assay-ai/vitest)
+[![downloads](https://img.shields.io/npm/dm/@assay-ai/vitest?style=flat-square&color=10b981)](https://www.npmjs.com/package/@assay-ai/vitest)
+[![License](https://img.shields.io/badge/license-MIT-blue?style=flat-square)](https://github.com/assay-ai/assay/blob/main/LICENSE)
+
+[Documentation](https://assay.js.org) · [Metrics](https://assay.js.org/metrics/) · [API Reference](https://assay.js.org/api/)
+
+</div>
 
 ## Installation
 
 ```bash
-npm install -D @assay-ai/core @assay-ai/vitest
-# or
-pnpm add -D @assay-ai/core @assay-ai/vitest
+pnpm add -D @assay-ai/core @assay-ai/vitest     # pnpm
+npm install -D @assay-ai/core @assay-ai/vitest   # npm
+yarn add -D @assay-ai/core @assay-ai/vitest      # Yarn
 ```
 
 ## Quick Start
 
-### Custom Matchers
-
-Register the Assay matchers once, then use them in any test file:
-
 ```typescript
-// setup.ts or at the top of your test file
-import { setupAssayMatchers } from "@assay-ai/vitest";
 import { beforeAll, describe, expect, test } from "vitest";
+import { setupAssayMatchers } from "@assay-ai/vitest";
 
 beforeAll(() => {
   setupAssayMatchers();
 });
 
 describe("Customer Support Chatbot", () => {
-  test("answers product questions accurately", async () => {
+  test("answers are relevant", async () => {
     await expect({
       input: "What is your return policy?",
       actualOutput: "You can return items within 30 days of purchase.",
@@ -51,58 +53,11 @@ describe("Customer Support Chatbot", () => {
 });
 ```
 
-### Available Matchers
+## Part of the [Assay](https://github.com/assay-ai/assay) monorepo
 
-| Matcher | Description |
-|---------|-------------|
-| `toBeRelevant(options?)` | Asserts the output is relevant to the input (Answer Relevancy) |
-| `toBeFaithful(options?)` | Asserts the output is grounded in context (Faithfulness) |
-| `toNotHallucinate(options?)` | Asserts the output doesn't contain hallucinations |
-| `toPassMetric(metric)` | Asserts the test case passes a specific metric |
-| `toPassAllMetrics(metrics)` | Asserts the test case passes all given metrics |
-
-All matchers accept an optional `{ threshold?: number }` options object.
-
-### Custom Metric Matcher
-
-Use `toPassMetric` with any built-in or custom metric:
-
-```typescript
-import { GEval } from "@assay-ai/core";
-
-const politeness = new GEval({
-  name: "Politeness",
-  criteria: "The response should be polite and professional.",
-});
-
-test("response is polite", async () => {
-  await expect({
-    input: "Help me with my order",
-    actualOutput: "I'd be happy to help! Could you share your order number?",
-  }).toPassMetric(politeness);
-});
-```
-
-### Reporter
-
-Assay includes a custom Vitest reporter that formats evaluation results:
-
-```typescript
-// vitest.config.ts
-import { defineConfig } from "vitest/config";
-
-export default defineConfig({
-  test: {
-    reporters: ["default", "@assay-ai/vitest/reporter"],
-  },
-});
-```
-
-## Peer Dependencies
-
-- `@assay-ai/core` >= 0.1.0
-- `vitest` >= 2.0.0
-
-## License
-
-[MIT](https://github.com/assay-ai/assay/blob/main/LICENSE)
+<p align="center">
+  <a href="https://assay.js.org"><img src="https://img.shields.io/badge/Documentation-6366f1?style=for-the-badge&logo=readthedocs&logoColor=white" alt="Documentation" /></a>
+  <a href="https://www.npmjs.com/package/@assay-ai/vitest"><img src="https://img.shields.io/badge/npm-cb3837?style=for-the-badge&logo=npm&logoColor=white" alt="npm" /></a>
+  <a href="https://github.com/assay-ai/assay"><img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" /></a>
+  <a href="https://github.com/assay-ai/assay/issues"><img src="https://img.shields.io/badge/Issues-6366f1?style=for-the-badge&logo=github&logoColor=white" alt="Issues" /></a>
+</p>

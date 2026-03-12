@@ -1,7 +1,8 @@
 {
   "name": "@assay-ai/jest",
-  "version": "0.3.0-beta",
+  "version": "1.3.1-beta",
   "description": "Jest integration for the Assay LLM evaluation framework",
+  "homepage": "https://assay.js.org",
   "license": "MIT",
   "type": "module",
   "main": "./dist/index.cjs",

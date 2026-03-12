@@ -15,6 +15,10 @@ export default defineConfig({
       { text: "API", link: "/api/" },
       { text: "Metrics", link: "/metrics/" },
       {
+        text: "npm",
+        link: "https://www.npmjs.com/org/assay-ai",
+      },
+      {
         text: "GitHub",
         link: "https://github.com/assay-ai/assay",
       },
